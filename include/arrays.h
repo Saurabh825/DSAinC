@@ -1,0 +1,1 @@
+int* getArray(int* size);
