@@ -9,5 +9,5 @@ include_directories(include)
 
 set(SOURCES main.c src/binarySearch.c)
 
-add_executable($(PROJECT_NAME) $(SOURCES))
+add_executable(${PROJECT_NAME} ${SOURCES})
 
