@@ -27,8 +27,21 @@ int* getArray(int* size)
 void printArray(int* arr, int size)
 {
     printf("The array is:\n");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
+        {
             printf("%d ", arr[i]);
         }
     printf("\n");
+}
+
+int minElement(int* arr, int size)
+{
+    int min = 0;
+    for (int i = 1; i < size; i++)
+    {
+        if (arr[i] < arr[min])
+            min = i;
+        
+    }
+    return min;
 }
