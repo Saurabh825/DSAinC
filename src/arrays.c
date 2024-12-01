@@ -34,7 +34,7 @@ void printArray(int* arr, int size)
     printf("\n");
 }
 
-int minElement(int* arr, int size)
+int findMinElementIndex(int* arr, int size)
 {
     int min = 0;
     for (int i = 1; i < size; i++)
