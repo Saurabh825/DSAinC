@@ -3,12 +3,14 @@ name: Build and Release DSAinC
 on:
   push:
     tags:
-      - "v*" # Trigger on new version tags (e.g., v1.0.0)
+      - "v*" # Trigger only on version tags (e.g., v1.2.1)
+
+permissions:
+  contents: write # 🔥 Grants permission to create releases
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -40,6 +42,8 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 🔥 Grants permission to create releases
 
     steps:
       - name: Download Artifact
@@ -52,4 +56,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }} # Uses default token with the correct permissions
+
