@@ -1,0 +1,55 @@
+name: Build and Release DSAinC
+
+on:
+  push:
+    tags:
+      - "v*" # Trigger on new version tags (e.g., v1.0.0)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Build Tools
+        run: sudo apt update && sudo apt install -y cmake make gcc
+
+      - name: Create Build Directory
+        run: mkdir -p build
+
+      - name: Configure CMake
+        run: cmake -S . -B build
+
+      - name: Build Project
+        run: cmake --build build --config Release
+
+      - name: Package Release
+        run: |
+          cd build
+          tar -czvf ../DSAinC-${{ github.ref_name }}.tar.gz *
+          cd ..
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DSAinC-${{ github.ref_name }}
+          path: DSAinC-${{ github.ref_name }}.tar.gz
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DSAinC-${{ github.ref_name }}
+          path: dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          token: ${{ secrets.GITHUB_TOKEN }}
